@@ -3,5 +3,5 @@ export function App() {
     <>
       <h1>Econominhas</h1>
     </>
-  )
+  );
 }

@@ -7,14 +7,18 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "biome check --apply ."
+    "lint": "biome check --apply .",
+    "prepare": "lefthook install"
   },
   "dependencies": {
     "solid-js": "^1.8.15"
   },
   "devDependencies": {
     "@biomejs/biome": "1.7.3",
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "autoprefixer": "^10.4.19",
+    "lefthook": "^1.6.10",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.2.2",

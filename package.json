@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "dependencies": {
+    "@solidjs/router": "^0.13.3",
     "solid-js": "^1.8.15",
     "zod": "^3.23.8"
   },

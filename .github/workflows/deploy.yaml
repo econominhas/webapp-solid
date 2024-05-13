@@ -1,0 +1,44 @@
+name: CI/CD Pipeline
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Build
+        run: |
+          pnpm i --ignore-scripts
+          pnpm run build
+
+      - name: Create .env file
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          file_name: ./dist/.env
+          fail_on_empty: false
+          sort_keys: false
+          # Ignore these erros, they are false positive
+          envkey_VITE_GOOGLE_AUTH_URL: ${{ vars.VITE_GOOGLE_AUTH_URL }}
+          envkey_VITE_FACEBOOK_AUTH_URL: ${{ vars.VITE_FACEBOOK_AUTH_URL }}
+
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_S3_BUCKET: ${{ vars.AWS_BUCKET }}
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          SOURCE_DIR: 'dist'

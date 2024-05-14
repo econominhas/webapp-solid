@@ -1,7 +1,14 @@
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/shared/auth-provider";
 
 export function SignIn() {
+  const { login } = useAuth();
+
+  async function handleWithGoogleLogin() {
+    await login("google");
+  }
+
   return (
     <main>
       <div class="container flex h-screen w-screen flex-col items-center justify-center">
@@ -16,7 +23,11 @@ export function SignIn() {
             </p>
           </div>
           <div class="flex items-center gap-2">
-            <Button variant="outline" class="flex-1">
+            <Button
+              onClick={handleWithGoogleLogin}
+              variant="outline"
+              class="flex-1"
+            >
               <Icons.google class="size-4" />
             </Button>
             <Button variant="outline" class="flex-1">

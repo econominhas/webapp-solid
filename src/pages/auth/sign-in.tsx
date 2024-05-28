@@ -5,10 +5,6 @@ import { useAuth } from "@/shared/auth-provider";
 export function SignIn() {
   const { login } = useAuth();
 
-  async function handleWithGoogleLogin() {
-    await login("google");
-  }
-
   return (
     <main>
       <div class="container flex h-screen w-screen flex-col items-center justify-center">
@@ -24,13 +20,17 @@ export function SignIn() {
           </div>
           <div class="flex items-center gap-2">
             <Button
-              onClick={handleWithGoogleLogin}
+              onClick={() => login("google")}
               variant="outline"
               class="flex-1"
             >
               <Icons.google class="size-4" />
             </Button>
-            <Button variant="outline" class="flex-1">
+            <Button
+              onClick={() => login("facebook")}
+              variant="outline"
+              class="flex-1"
+            >
               <Icons.facebook class="size-4" />
             </Button>
           </div>

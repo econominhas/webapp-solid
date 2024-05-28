@@ -1,12 +1,14 @@
-import { useNavigate } from "@solidjs/router";
+import { useNavigate, useSearchParams } from "@solidjs/router";
 import { type ParentComponent, createEffect } from "solid-js";
 
 export const RouteGuard: ParentComponent = (props) => {
   const navigate = useNavigate();
-  const token = sessionStorage.getItem("token");
+  const searchParam = useSearchParams();
+
+  const hasCode = searchParam[0].code;
 
   createEffect(() => {
-    if (!token) {
+    if (!hasCode) {
       navigate("/login", { replace: true });
     }
   });

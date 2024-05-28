@@ -1,28 +1,36 @@
+import { env } from "@/utils/env";
 import { type ParentComponent, createContext, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 
-type SessionProps = {
-  token: string;
+type AuthResponse = {
   refreshToken: string;
-  user: {
-    name: string;
-  };
+  accessToken: string;
+  expiresAt: string;
 };
 
 type Props = {
-  login: (provider: string) => Promise<void>;
+  login: (provider: "google" | "facebook") => Promise<void>;
   logout?: () => Promise<void>;
   revalidate?: () => Promise<void>;
-  session: SessionProps;
+  session: AuthResponse;
 };
 
 const AuthContext = createContext({} as Props);
 
 export const AuthProvider: ParentComponent = (props) => {
-  const [authSession, _] = createStore<SessionProps>({} as SessionProps);
+  const [authSession, _] = createStore<AuthResponse>({} as AuthResponse);
 
-  async function login(provider: string) {
-    console.log(`Login with ${provider}`);
+  async function login(provider: "google" | "facebook") {
+    switch (provider) {
+      case "google":
+        window.location.href = env.VITE_GOOGLE_AUTH_URL;
+        break;
+      case "facebook":
+        console.log("Nothing to do yet");
+        break;
+      default:
+        console.log("Nothing to do");
+    }
   }
 
   return (
